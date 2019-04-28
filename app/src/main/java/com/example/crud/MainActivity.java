@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.crud.model.GetAll.DataItem;
 import com.example.crud.model.GetAll.GetResponse;
+import com.example.crud.model.GetItem.Data;
 import com.example.crud.model.GetItem.GetItemResponse;
 import com.example.crud.presenter.MainPresenter;
 import com.example.crud.presenter.MainView;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements MainView, ItemsAd
     private ItemsAdapter itemsAdapter;
     private MainPresenter presenter;
     private List<DataItem> list;
+    private Data data;
     private FloatingActionButton floatingActionButton;
     private SearchView searchView;
 
@@ -39,6 +41,20 @@ public class MainActivity extends AppCompatActivity implements MainView, ItemsAd
         recyclerView = findViewById(R.id.rv_items);
         floatingActionButton = findViewById(R.id.fb_items);
         searchView = findViewById(R.id.search);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                presenter.getItems(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Toast.makeText(getBaseContext(), newText, Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
